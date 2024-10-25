@@ -1,0 +1,10 @@
+Lib/
+Scripts/
+Include/
+bin/
+include/
+lib/
+migrations/
+/pyvenv.cfg
+__pycache__
+db.sqlite3

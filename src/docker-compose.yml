@@ -1,0 +1,42 @@
+# Verion of docker-compose to use 
+version: "3.9"
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+
+  web:
+    build: .
+    ports:
+      - 8080:8080
+    env_file: ./.env
+    restart: always
+    expose:
+      - 8080
+    depends_on:
+      - db
+        #command: gunicorn --bind 0.0.0.0:8080 adjudiCat.wsgi:application --timeout 90
+    #gunicorn --bind :8080 adjudiCat.wsgi:application
+    command: python manage.py runserver 0.0.0.0:8080
+    volumes:
+      - .:/code
+    image: app:adjudicat
+    container_name: adjudicat_backend
+
+volumes:
+  postgres_data:
+
+
+
+
